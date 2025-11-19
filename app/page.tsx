@@ -80,21 +80,18 @@ export default function Home() {
                 {/* Floating Cards */}
                 <div className="absolute top-0 left-0 w-64 h-64 bg-linear-to-br from-primary to-primary-dark rounded-2xl shadow-2xl animate-float p-6 glass-effect">
                   <div className="text-gray-600">
-                    <div className="text-4xl mb-2">🎨</div>
                     <h3 className="text-xl font-bold mb-2">Creative Design</h3>
                     <p className="text-sm opacity-90">Beautiful, user-centric designs</p>
                   </div>
                 </div>
                 <div className="absolute top-20 right-0 w-64 h-64 bg-linear-to-br from-secondary to-secondary-dark rounded-2xl shadow-2xl animate-float p-6 glass-effect" style={{ animationDelay: '1s' }}>
                   <div className="text-gray-600">
-                    <div className="text-4xl mb-2">⚡</div>
                     <h3 className="text-xl font-bold mb-2">Fast Performance</h3>
                     <p className="text-sm opacity-90">Lightning-fast load times</p>
                   </div>
                 </div>
                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-linear-to-br from-accent to-accent-dark rounded-2xl shadow-2xl animate-float p-6 glass-effect" style={{ animationDelay: '2s' }}>
                   <div className="text-gray-600">
-                    <div className="text-4xl mb-2">🚀</div>
                     <h3 className="text-xl font-bold mb-2">Scalable Solutions</h3>
                     <p className="text-sm opacity-90">Growth-ready infrastructure</p>
                   </div>
