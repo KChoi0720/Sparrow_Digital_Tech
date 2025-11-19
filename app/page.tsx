@@ -59,11 +59,11 @@ export default function Home() {
               <div className="inline-block px-6 py-3 bg-primary/10 rounded-full text-primary font-semibold text-sm" style={{padding:'8px', marginBottom:'10px'}}>
                 ✨ Welcome to Sparrow Digital
               </div>
-              <h1 className="text-3xl md:text-5xl lg:text-7xl font-bold leading-tight" style={{ marginTop:'10px'}}>
+              <h1 className="text-2xl md:text-4xl lg:text-6xl font-bold leading-tight" style={{ marginTop:'10px'}}>
                 Transform Your
                 <span className="gradient-text"> Digital Presence</span>
               </h1>
-              <p className="text-base md:text-xl text-gray-600 leading-relaxed" style={{ marginTop:'10px', marginBottom:'20px'}}>
+              <p className="text-sm md:text-lg text-gray-600 leading-relaxed" style={{ marginTop:'10px', marginBottom:'20px'}}>
                 We craft innovative digital solutions that elevate your brand and drive meaningful results. From web development to digital marketing, we bring your vision to life.
               </p>
               <div className="flex flex-wrap gap-4 mt-8" style={{marginBottom:'10px'}}>
@@ -77,15 +77,15 @@ export default function Home() {
               {/* Stats */}
               <div className="grid grid-cols-3 gap-8 pt-8">
                 <div className="text-center lg:text-left" style={{marginTop:'10px'}}>
-                  <div className="text-3xl font-bold text-primary">10+</div>
+                  <div className="text-sm md:text-xl font-bold text-primary">10+</div>
                   <div className="text-gray-600">Projects</div>
                 </div>
                 <div className="text-center lg:text-left" style={{marginTop:'10px'}}>
-                  <div className="text-3xl font-bold text-secondary">100%</div>
+                  <div className="text-sm md:text-xl font-bold text-secondary">100%</div>
                   <div className="text-gray-600">Satisfaction</div>
                 </div>
                 <div className="text-center lg:text-left" style={{marginTop:'10px'}}>
-                  <div className="text-3xl font-bold text-accent">7d</div>
+                  <div className="text-sm md:text-xl font-bold text-accent">7d</div>
                   <div className="text-gray-600">Support</div>
                 </div>
               </div>
@@ -97,19 +97,19 @@ export default function Home() {
                 {/* Floating Cards */}
                 <div className="absolute top-0 left-0 w-64 h-64 bg-linear-to-br from-primary to-primary-dark rounded-2xl shadow-2xl animate-float p-6 glass-effect">
                   <div className="text-gray-600" style={{margin:'20px'}}>
-                    <h3 className="text-xl font-bold mb-2">Creative Design</h3>
+                    <h3 className="text-sm md:text-lg font-bold mb-2">Creative Design</h3>
                     <p className="text-sm opacity-90">Beautiful, user-centric designs</p>
                   </div>
                 </div>
                 <div className="absolute top-20 right-0 w-64 h-64 bg-linear-to-br from-secondary to-secondary-dark rounded-2xl shadow-2xl animate-float p-6 glass-effect" style={{ animationDelay: '1s' }}>
                   <div className="text-gray-600" style={{margin:'20px'}}>
-                    <h3 className="text-xl font-bold mb-2">Fast Performance</h3>
+                    <h3 className="text-sm md:text-lg font-bold mb-2">Fast Performance</h3>
                     <p className="text-sm opacity-90">Lightning-fast load times</p>
                   </div>
                 </div>
                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-linear-to-br from-accent to-accent-dark rounded-2xl shadow-2xl animate-float p-6 glass-effect" style={{ animationDelay: '2s' }}>
                   <div className="text-gray-600" style={{margin:'20px'}}>
-                    <h3 className="text-xl font-bold mb-2">Scalable Solutions</h3>
+                    <h3 className="text-sm md:text-lg font-bold mb-2">Scalable Solutions</h3>
                     <p className="text-sm opacity-90">Growth-ready infrastructure</p>
                   </div>
                 </div>
@@ -496,7 +496,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="text-center mt-16">
+          <div className="text-center mt-16" style={{marginTop:'40px'}}>
             <Link href="/services" className="btn btn-primary">
               View All Services
             </Link>
