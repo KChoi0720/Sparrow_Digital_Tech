@@ -74,9 +74,10 @@ export default function Header() {
           <div className="hidden lg:block">
             <Link 
               href="/contact" 
-              className="btn btn-primary shadow-lg hover:shadow-xl px-6 py-2.5"
+              className="btn btn-primary shadow-lg hover:shadow-xl px-4 py-2.5"
+              style={{padding:'10px'}}
             >
-              Get Started <span className="ml-1 group-hover:translate-x-1 inline-block transition-transform duration-300">→</span>
+              Get Started <span className="ml-1 group-hover:translate-x-1 inline-block transition-transform duration-300" style={{marginLeft:'10px'}}>→</span>
             </Link>
           </div>
 
@@ -108,29 +109,33 @@ export default function Header() {
 
         {/* Mobile Menu */}
         <div
-          className={`lg:hidden overflow-hidden transition-all duration-500 ${
+          className={`lg:hidden overflow-hidden transition-all duration-500 flex justify-end ${
             isMobileMenuOpen ? 'max-h-[500px] opacity-100 mt-4' : 'max-h-0 opacity-0'
           }`}
         >
-          <div className="py-6 space-y-2 bg-white/95 backdrop-blur-lg rounded-2xl shadow-xl border border-gray-100">
+          <div 
+            className="bg-linear-to-br from-primary to-secondary rounded-2xl shadow-xl flex flex-col items-center w-fit"
+            style={{ paddingTop: '1rem', paddingBottom: '2rem'}}
+          >
             {navItems.map((item, index) => (
               <Link
                 key={item.name}
                 href={item.path}
-                className="block py-3 px-6 text-gray-700 hover:text-primary hover:bg-primary/5 transition-all duration-300 font-semibold rounded-xl mx-2"
+                className="block text-white hover:text-white hover:bg-white/20 transition-all duration-300 font-semibold rounded-xl whitespace-nowrap"
                 onClick={() => setIsMobileMenuOpen(false)}
-                style={{ animationDelay: `${index * 0.05}s` }}
+                style={{ 
+                  animationDelay: `${index * 0.05}s`,
+                  paddingTop: '0.2rem',
+                  paddingBottom: '0.5rem',
+                }}
               >
-                <span className="flex items-center justify-between">
-                  {item.name}
-                  <span className="text-primary opacity-0 group-hover:opacity-100 transition-opacity">→</span>
-                </span>
+                {item.name}
               </Link>
             ))}
-            <div className="pt-4 px-2">
+            <div style={{ paddingTop: '1.5rem', paddingLeft: '0.5rem', paddingRight: '0.5rem' }}>
               <Link
                 href="/contact"
-                className="btn btn-primary w-full shadow-lg"
+                className="btn bg-white text-primary hover:bg-gray-100 shadow-lg px-8"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Get Started
