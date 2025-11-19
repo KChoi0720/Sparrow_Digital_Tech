@@ -150,7 +150,7 @@ export default function Home() {
       >
         <div className="container relative z-10">
           <div className="text-center mb-20 flex flex-col items-center justify-center">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"  style={{ marginTop:'10px',marginBottom:'40px'}}>
+            <h2 className="text-2xl md:text-5xl font-bold mb-6"  style={{ marginTop:'10px',marginBottom:'40px'}}>
               Why Choose Us
             </h2>
             <p className="text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"  style={{marginBottom:'40px'}}>
@@ -532,7 +532,7 @@ export default function Home() {
 
           <div className="text-center mt-16" style={{marginTop:'40px'}}>
             <Link href="/services" className="btn btn-primary">
-              View All Services
+                <p className='text-[11px] md:text-sm'>View All Services</p>
             </Link>
           </div>
         </div>
@@ -543,24 +543,24 @@ export default function Home() {
         className="relative bg-linear-to-br bg-primary to-secondary/40 fade-in-section text-white"
         style={{ paddingTop: '5rem', paddingBottom: '5rem' }}
       >
-        <div className="container">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+        <div className="container flex justify-center items-center">
+          <div className="max-w-4xl text-center">
+            <h2 className="text-xl md:text-3xl font-bold mb-6 text-center">
               Ready to Start Your Project?
             </h2>
-            <p className="text-xl mb-8 opacity-90">
+            <p className="text-sm md:text-lg mb-8 opacity-90 text-center" style={{marginTop:'10px', marginBottom:'20px'}}>
               Let&apos;s discuss how we can help transform your digital presence and achieve your business goals
             </p>
-            <div className="flex flex-wrap gap-4 justify-center">
+            <div className="flex flex-wrap gap-4 justify-center items-center">
               <Link href="/contact" className="btn bg-white text-primary hover:bg-gray-100">
-                Contact Us
+                <p className='text-[11px] md:text-sm'>Contact Us</p>
               </Link>
               <Link 
                 href="/pricing" 
                 className="btn btn-outline border-2 hover:bg-white" 
                 style={{ borderColor: '#fbbf24', color: '#fbbf24' }}
               >
-                View Pricing
+                <p className='text-[11px] md:text-sm'>View Pricing</p>
               </Link>
             </div>
           </div>
