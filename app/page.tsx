@@ -68,30 +68,30 @@ export default function Home() {
                   <div className="text-gray-600">Satisfaction</div>
                 </div>
                 <div className="text-center lg:text-left" style={{marginTop:'10px'}}>
-                  <div className="text-3xl font-bold text-accent">24/7</div>
+                  <div className="text-3xl font-bold text-accent">7d</div>
                   <div className="text-gray-600">Support</div>
                 </div>
               </div>
             </div>
 
             {/* Right Content - Animated Graphics */}
-            <div className="relative animate-slide-in-right">
+            <div className="relative animate-slide-in-right" style={{marginTop:'80px', marginBottom:'100px'}}>
               <div className="relative w-full h-[500px]">
                 {/* Floating Cards */}
                 <div className="absolute top-0 left-0 w-64 h-64 bg-linear-to-br from-primary to-primary-dark rounded-2xl shadow-2xl animate-float p-6 glass-effect">
-                  <div className="text-gray-600">
+                  <div className="text-gray-600" style={{margin:'20px'}}>
                     <h3 className="text-xl font-bold mb-2">Creative Design</h3>
                     <p className="text-sm opacity-90">Beautiful, user-centric designs</p>
                   </div>
                 </div>
                 <div className="absolute top-20 right-0 w-64 h-64 bg-linear-to-br from-secondary to-secondary-dark rounded-2xl shadow-2xl animate-float p-6 glass-effect" style={{ animationDelay: '1s' }}>
-                  <div className="text-gray-600">
+                  <div className="text-gray-600" style={{margin:'20px'}}>
                     <h3 className="text-xl font-bold mb-2">Fast Performance</h3>
                     <p className="text-sm opacity-90">Lightning-fast load times</p>
                   </div>
                 </div>
                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-linear-to-br from-accent to-accent-dark rounded-2xl shadow-2xl animate-float p-6 glass-effect" style={{ animationDelay: '2s' }}>
-                  <div className="text-gray-600">
+                  <div className="text-gray-600" style={{margin:'20px'}}>
                     <h3 className="text-xl font-bold mb-2">Scalable Solutions</h3>
                     <p className="text-sm opacity-90">Growth-ready infrastructure</p>
                   </div>
@@ -124,28 +124,24 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+          <div className="flex flex-col items-center gap-6 md:grid md:grid-cols-2 md:items-stretch lg:grid-cols-4 lg:gap-8">
             {[
               {
-                icon: '💡',
                 title: 'Innovative Solutions',
                 description: 'Cutting-edge technology and creative approaches to solve your challenges',
                 color: 'primary'
               },
               {
-                icon: '🎯',
                 title: 'Result-Driven',
                 description: 'Focus on measurable outcomes that impact your bottom line',
                 color: 'secondary'
               },
               {
-                icon: '🤝',
                 title: 'Collaborative',
                 description: 'Working closely with you at every step of the journey',
                 color: 'accent'
               },
               {
-                icon: '⚙️',
                 title: 'Reliable Support',
                 description: '24/7 support to ensure your success at every moment',
                 color: 'primary'
@@ -153,8 +149,11 @@ export default function Home() {
             ].map((feature, index) => (
               <div
                 key={index}
-                className="card text-center group p-8 lg:p-10 hover:scale-105 transition-all duration-500 cursor-pointer relative overflow-hidden"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                className="card text-center group hover:scale-105 transition-all duration-500 cursor-pointer relative overflow-hidden w-[280px] md:w-auto md:h-full"
+                style={{ 
+                  animationDelay: `${index * 0.1}s`,
+                  padding: '1.5rem'
+                }}
               >
                 {/* 悬停时的背景渐变效果 */}
                 <div className={`absolute inset-0 bg-linear-to-br opacity-0 group-hover:opacity-5 transition-opacity duration-500 ${
@@ -164,22 +163,42 @@ export default function Home() {
                 }`}></div>
                 
                 {/* 图标容器 */}
-                <div className={`relative inline-flex items-center justify-center w-20 h-20 lg:w-24 lg:h-24 mb-6 rounded-2xl bg-linear-to-br transition-all duration-500 group-hover:rotate-6 group-hover:scale-110 ${
-                  feature.color === 'primary' ? 'from-primary/10 to-primary/5 group-hover:from-primary/20 group-hover:to-primary/10' :
-                  feature.color === 'secondary' ? 'from-secondary/10 to-secondary/5 group-hover:from-secondary/20 group-hover:to-secondary/10' :
-                  'from-accent/10 to-accent/5 group-hover:from-accent/20 group-hover:to-accent/10'
-                }`}  style={{ marginTop:'20px', marginBottom:'20px'}}>
-                  <span className="text-4xl lg:text-5xl" >{feature.icon}</span>
+                <div 
+                  className={`relative inline-flex items-center justify-center rounded-2xl bg-linear-to-br transition-all duration-500 group-hover:rotate-6 group-hover:scale-110 ${
+                    feature.color === 'primary' ? 'from-primary/10 to-primary/5 group-hover:from-primary/20 group-hover:to-primary/10' :
+                    feature.color === 'secondary' ? 'from-secondary/10 to-secondary/5 group-hover:from-secondary/20 group-hover:to-secondary/10' :
+                    'from-accent/10 to-accent/5 group-hover:from-accent/20 group-hover:to-accent/10'
+                  }`}  
+                  style={{ 
+                    width: '60px',
+                    height: '60px',
+                    marginTop: '10px',
+                    marginBottom: '15px'
+                  }}
+                >
+                  {/* <span className="text-3xl lg:text-5xl">{feature.icon}</span> */}
                 </div>
                 
-                <h3 className={`text-xl lg:text-2xl font-bold mb-4 transition-colors duration-300 ${
-                  feature.color === 'primary' ? 'group-hover:text-primary' :
-                  feature.color === 'secondary' ? 'group-hover:text-secondary' :
-                  'group-hover:text-accent'
-                }`}  style={{ marginBottom:'20px'}}>
+                <h3 
+                  className={`font-bold transition-colors duration-300 ${
+                    feature.color === 'primary' ? 'group-hover:text-primary' :
+                    feature.color === 'secondary' ? 'group-hover:text-secondary' :
+                    'group-hover:text-accent'
+                  }`}  
+                  style={{ 
+                    fontSize: '1rem',
+                    marginBottom: '12px'
+                  }}
+                >
                   {feature.title}
                 </h3>
-                <p className="text-gray-600 leading-relaxed text-sm lg:text-base"  style={{ marginBottom:'20px'}}>
+                <p 
+                  className="text-gray-600 leading-relaxed"  
+                  style={{ 
+                    fontSize: '0.875rem',
+                    marginBottom: '10px'
+                  }}
+                >
                   {feature.description}
                 </p>
               </div>
