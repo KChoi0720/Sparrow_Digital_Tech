@@ -258,9 +258,10 @@ export default function Home() {
             `}</style>
             
             <div 
-              className="flex gap-4 items-center px-4 md:px-10" 
+              className="flex items-center px-4 md:px-10" 
               style={{ 
-                perspective: '1000px'
+                perspective: '1000px',
+                gap: '1.5rem'
               }}
             >
               {[
@@ -269,7 +270,6 @@ export default function Home() {
                 description: 'Custom websites and web applications built with modern technologies',
                 gradient: 'from-primary to-primary-dark',
                 bgColor: 'primary',
-                icon: '🌐',
                 link: '/services#web',
                 coverImage: '/images/art-1.png'
               },
@@ -278,7 +278,6 @@ export default function Home() {
                 description: 'Native and cross-platform mobile applications for iOS and Android',
                 gradient: 'from-secondary to-secondary-dark',
                 bgColor: 'secondary',
-                icon: '📱',
                 link: '/services#mobile',
                 coverImage: '/images/art-2.png'
               },
@@ -287,7 +286,6 @@ export default function Home() {
                 description: 'Beautiful, intuitive designs that delight your users',
                 gradient: 'from-accent to-accent-dark',
                 bgColor: 'accent',
-                icon: '🎨',
                 link: '/services#design',
                 coverImage: '/images/art-3.png'
               },
@@ -296,7 +294,6 @@ export default function Home() {
                 description: 'Strategic marketing campaigns that drive growth and engagement',
                 gradient: 'from-primary to-secondary',
                 bgColor: 'primary',
-                icon: '📈',
                 link: '/services#marketing',
                 coverImage: '/images/art-4.png'
               },
@@ -305,7 +302,6 @@ export default function Home() {
                 description: 'Scalable cloud infrastructure and deployment strategies',
                 gradient: 'from-secondary to-accent',
                 bgColor: 'secondary',
-                icon: '☁️',
                 link: '/services#cloud',
                 coverImage: '/images/art-5.png'
               },
@@ -314,13 +310,13 @@ export default function Home() {
                 description: 'Expert guidance to transform your digital strategy',
                 gradient: 'from-accent to-primary',
                 bgColor: 'accent',
-                icon: '💼',
                 link: '/services#consulting'
               }
             ].map((service, index) => {
               const isActive = activeCard === index;
               const totalCards = 6;
-              const middleIndex = Math.floor(totalCards / 2);
+              // 对于偶数个卡片，中心点应该在两个中间卡片之间
+              const middleIndex = (totalCards - 1) / 2; // (6-1)/2 = 2.5
               const distanceFromCenter = index - middleIndex;
               const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
               
@@ -330,10 +326,10 @@ export default function Home() {
                 if (isMobile) return '100px'; // 手机端所有卡片统一宽度，增加到100px更容易点击
                 
                 const absDistance = Math.abs(distanceFromCenter);
-                // 桌面端：中间: 60px, 往外: 120px, 180px, 200px
-                if (absDistance === 0 || absDistance === 0.5) return '60px';
-                if (absDistance === 1 || absDistance === 1.5) return '120px';
-                if (absDistance === 2 || absDistance === 2.5) return '180px';
+                // 桌面端：最接近中心(0.5): 120px, 1.5: 180px, 2.5: 200px
+                if (absDistance === 0.5) return '120px';
+                if (absDistance === 1.5) return '180px';
+                if (absDistance === 2.5) return '200px';
                 return '200px';
               };
               
@@ -351,19 +347,16 @@ export default function Home() {
                 // 桌面端：3D书架效果
                 const absDistance = Math.abs(distanceFromCenter);
                 
-                // 中间的卡片 - 90度显示书脊
-                if (absDistance === 0 || absDistance === 0.5) {
-                  return 'rotateY(90deg) translateZ(0px) scale(0.95)';
-                }
-                
                 // 左边的卡片 - 角度逐渐减小
                 if (distanceFromCenter < 0) {
-                  const rotation = 75 - absDistance * 10; // 75, 65, 55...
+                  // 0.5: 75deg, 1.5: 65deg, 2.5: 55deg
+                  const rotation = 75 - (absDistance - 0.5) * 10;
                   return `rotateY(${rotation}deg) translateZ(-20px) scale(0.95)`;
                 }
                 
                 // 右边的卡片 - 角度逐渐减小
-                const rotation = -75 + absDistance * 10; // -75, -65, -55...
+                // 0.5: -75deg, 1.5: -65deg, 2.5: -55deg
+                const rotation = -75 + (absDistance - 0.5) * 10;
                 return `rotateY(${rotation}deg) translateZ(-20px) scale(0.95)`;
               };
 
@@ -383,16 +376,56 @@ export default function Home() {
                     zIndex: isActive ? 50 : 10 - Math.abs(distanceFromCenter)
                   }}
                 >
+                  {/* 书脊 - 根据卡片位置显示在左侧或右侧 */}
+                  {!isActive && !isMobile && (() => {
+                    const isLeftSide = distanceFromCenter < 0;
+                    const isRightSide = distanceFromCenter > 0;
+                    
+                    if (isLeftSide) {
+                      // 左边的卡片 - 书脊在左侧
+                      return (
+                        <div 
+                          className={`absolute top-0 bottom-0 bg-linear-to-br ${service.gradient} transition-all duration-700 rounded-l-lg`}
+                          style={{
+                            width: '20px',
+                            left: '-20px',
+                            boxShadow: 'inset -2px 0 4px rgba(0,0,0,0.3)'
+                          }}
+                        >
+                          <div className="absolute inset-y-0 right-0 w-px bg-black/30"></div>
+                          <div className="absolute top-6 bottom-6 left-1/2 w-px bg-white/20 -translate-x-1/2"></div>
+                        </div>
+                      );
+                    } else if (isRightSide) {
+                      // 右边的卡片 - 书脊在右侧
+                      return (
+                        <div 
+                          className={`absolute top-0 bottom-0 bg-linear-to-br ${service.gradient} transition-all duration-700 rounded-r-lg`}
+                          style={{
+                            width: '20px',
+                            right: '-20px',
+                            boxShadow: 'inset 2px 0 4px rgba(0,0,0,0.3)'
+                          }}
+                        >
+                          <div className="absolute inset-y-0 left-0 w-px bg-black/30"></div>
+                          <div className="absolute top-6 bottom-6 left-1/2 w-px bg-white/20 -translate-x-1/2"></div>
+                          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform -rotate-90 whitespace-nowrap">
+                          </div>
+                        </div>
+                      );
+                    }
+                    return null;
+                  })()}
+                  
                   {/* 卡片主体 */}
                   <div 
-                    className={`absolute inset-0 rounded-2xl shadow-2xl bg-linear-to-br ${service.gradient} overflow-hidden transition-all duration-700`}
+                    className={`absolute inset-0 shadow-2xl bg-linear-to-br ${service.gradient} overflow-hidden transition-all duration-700`}
                     style={{
                       backfaceVisibility: 'hidden'
                     }}
                   >
                     {/* 书脊/侧面视图 - 未展开时显示 */}
                     {!isActive && (() => {
-                      const absDistance = Math.abs(distanceFromCenter);
                       const cardWidth = getWidth();
                       
                       // 手机端 - 所有卡片都只显示书脊
@@ -406,18 +439,7 @@ export default function Home() {
                         );
                       }
                       
-                      // 桌面端 - 中间的卡片只显示书脊
-                      if (absDistance === 0 || absDistance === 0.5) {
-                        return (
-                          <div className="h-full flex items-center justify-center">
-                            <div className="transform -rotate-90 whitespace-nowrap">
-                              <h3 className="text-white font-bold text-xl">{service.title}</h3>
-                            </div>
-                          </div>
-                        );
-                      }
-                      
-                      // 桌面端 - 侧面的卡片显示封面图片
+                      // 桌面端 - 所有卡片都显示封面图片（不再有纯书脊模式）
                       return (
                         <div className="h-full relative overflow-hidden">
                           {/* 封面图片 */}
@@ -452,10 +474,6 @@ export default function Home() {
                     {isActive && (
                       <div className="h-full p-8 flex flex-col justify-between text-white overflow-y-auto">
                         <div>
-                          {/* 图标 */}
-                          <div className="inline-flex items-center justify-center w-20 h-20 mb-6 rounded-2xl bg-white/20">
-                            <span className="text-5xl">{service.icon}</span>
-                          </div>
                           
                           {/* 标题 */}
                           <h3 className="text-3xl font-bold mb-4">
