@@ -114,17 +114,13 @@ export default function Home() {
 
       {/* Features Section */}
       <section 
-        className="relative bg-linear-to-br from-primary/5 via-white to-secondary/5 fade-in-section"
+        className="relative bg-linear-to-br bg-primary to-secondary/40 fade-in-section"
         style={{ paddingTop: '6rem', paddingBottom: '6rem' }}
       >
-        {/* 装饰性背景元素 */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl"></div>
-        
         <div className="container relative z-10">
           <div className="text-center mb-20 flex flex-col items-center justify-center">
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"  style={{ marginTop:'10px',marginBottom:'40px'}}>
-              Why Choose <span className="gradient-text">Us</span>
+              Why Choose Us
             </h2>
             <p className="text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"  style={{marginBottom:'40px'}}>
               We combine creativity, technology, and strategy to deliver exceptional results that drive your business forward
@@ -320,7 +316,7 @@ export default function Home() {
 
       {/* CTA Section */}
       <section 
-        className="bg-linear-to-r from-primary to-secondary text-white fade-in-section"
+        className="relative bg-linear-to-br bg-primary to-secondary/40 fade-in-section text-white"
         style={{ paddingTop: '5rem', paddingBottom: '5rem' }}
       >
         <div className="container">

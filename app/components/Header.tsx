@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 
 export default function Header() {
@@ -37,8 +38,16 @@ export default function Header() {
             href="/" 
             className="flex items-center space-x-3 animate-fade-in group"
           >
-            <div className="w-11 h-11 bg-linear-to-br from-primary to-secondary rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all duration-300">
-              <span className="text-white font-bold text-xl">S</span>
+            <div className="relative w-15 h-15 group-hover:scale-105 transition-all duration-300"
+                            style={{marginRight: '20px'}}>
+              <Image
+                src="/images/sparrow-logo.png"
+                alt="Sparrow Digital Logo"
+                width={44}
+                height={44}
+                className="object-contain w-15 h-15 rounded-2xl border-primary border"  
+                priority
+              />
             </div>
             <span className="text-xl font-bold gradient-text group-hover:scale-105 transition-transform duration-300">
               Sparrow Digital
