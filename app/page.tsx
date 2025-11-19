@@ -370,10 +370,12 @@ export default function Home() {
                   className="relative cursor-pointer transition-all duration-700 ease-out"
                   style={{
                     width: getWidth(),
-                    height: isMobile ? '400px' : '500px',
+                    height: isMobile ? '300px' : '380px',
                     transformStyle: isMobile ? 'flat' : 'preserve-3d',
                     transform: getTransform(),
-                    zIndex: isActive ? 50 : 10 - Math.abs(distanceFromCenter)
+                    zIndex: isActive ? 50 : 10 - Math.abs(distanceFromCenter),
+                    marginTop:'40px',
+                    marginBottom:'40px',
                   }}
                 >
                   {/* 书脊 - 根据卡片位置显示在左侧或右侧 */}
