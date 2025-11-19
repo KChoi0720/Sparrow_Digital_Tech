@@ -120,13 +120,13 @@ export default function Footer() {
                                 <input
                                     type="email"
                                     placeholder="Enter your email"
-                                    className="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 focus:border-[var(--primary)] focus:outline-none transition-colors duration-300"
-                                    style={{height:'40px'}}
+                                    className="text-[10px] md:text-xs w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 focus:border-[var(--primary)] focus:outline-none transition-colors duration-300"
+                                    style={{height:'30px', paddingLeft:'10px'}}
                                 />
                                 <button
                                     type="submit"
                                     className="btn btn-primary w-full"
-                                    style={{marginTop:'10px', fontSize:'14px', width:'80%'}}
+                                    style={{marginTop:'20px', marginBottom:'20px', fontSize:'12px', width:'40%', height:'30px'}}
                                 >
                                     Subscribe
                                 </button>
@@ -138,15 +138,15 @@ export default function Footer() {
                 {/* Bottom Bar */}
                 <div className="border-t border-gray-800 py-6">
                     <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-                        <p className="text-gray-400 text-sm">
+                        <p className="text-gray-400 text-[12px] md:text-xs" style={{marginTop:'10px', marginBottom:'10px'}}>
                             © {currentYear} Sparrow Digital. All rights reserved.
                         </p>
-                        <div className="flex space-x-6" style={{marginBottom:'20px'}}>
+                        <div className="flex flex-wrap gap-6 md:gap-6" style={{marginTop:'10px', marginBottom:'10px'}}>
                             {footerLinks.legal.map((link) => (
                                 <Link
                                     key={link.name}
                                     href={link.path}
-                                    className="text-gray-400 hover:text-white text-sm transition-colors duration-300"
+                                    className="text-gray-400 hover:text-white text-[12px] md:text-xs transition-colors duration-300"
                                 >
                                     {link.name}
                                 </Link>

@@ -64,10 +64,11 @@ export default function Home() {
       <section 
         ref={heroRef} 
         className="relative min-h-screen bg-linear-to-b from-gray-50 to-white"
+         style={{paddingBottom:'100px'}}
       >
         <div 
           className="container min-h-screen flex items-center"
-          style={{ paddingTop: '160px' }}
+          style={{ paddingTop: '140px' }}
         >
           <div className="grid lg:grid-cols-2 gap-12 items-center w-full">
             {/* Left Content */}
