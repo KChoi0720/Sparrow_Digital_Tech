@@ -173,15 +173,19 @@ html {
   animation: pulse 2s ease-in-out infinite;
 }
 
-/* Utility Classes */
+/* Utility Classes - 全局基础样式 */
 .container {
   max-width: var(--container-max-width);
   margin: 0 auto;
-  padding: 0 2rem;
+  padding-left: 1.5rem;  /* 24px - 手机端左右边距 */
+  padding-right: 1.5rem; /* 24px - 手机端左右边距 */
 }
 
-.section {
-  padding: var(--section-padding) 0;
+@media (min-width: 1024px) {
+  .container {
+    padding-left: 3rem;  /* 48px - 电脑端左右边距 */
+    padding-right: 3rem; /* 48px - 电脑端左右边距 */
+  }
 }
 
 .glass-effect {
@@ -198,58 +202,116 @@ html {
   background-clip: text;
 }
 
+/* Button 全局样式 - 统一控制内边距和效果 */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.75rem 2rem;
-  border-radius: 0.5rem;
+  padding: 0.75rem 1rem; /* 上下16px 左右40px - 更宽松的内边距 */
+  border-radius: 0.75rem; /* 更圆润的圆角 */
   font-weight: 600;
-  transition: all var(--transition-base) var(--ease-smooth);
+  font-size: 1rem;
+  line-height: 1.5;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
-  border: none;
   text-decoration: none;
+  border: none;
+  position: relative;
+  overflow: hidden;
+  /* 防止文本选中 */
+  user-select: none;
+  -webkit-user-select: none;
 }
 
+/* 悬停时的微妙晃动动画 */
+@keyframes buttonHover {
+  0%, 100% {
+    transform: translateY(-3px) scale(1.02);
+  }
+  50% {
+    transform: translateY(-4px) scale(1.02);
+  }
+}
+
+.btn:hover {
+  animation: buttonHover 0.6s ease-in-out;
+  font-weight: 700; /* 悬停时字体加深 */
+}
+
+.btn:active {
+  transform: translateY(0px) scale(0.98);
+  transition: all 0.1s;
+}
+
+/* Primary Button */
 .btn-primary {
-  background: var(--primary);
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: white;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
 }
 
 .btn-primary:hover {
-  background: var(--primary-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+  transform: translateY(-3px);
 }
 
+.btn-primary:active {
+  box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);
+}
+
+/* Secondary Button */
 .btn-secondary {
-  background: var(--secondary);
+  background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
   color: white;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
 }
 
 .btn-secondary:hover {
-  background: var(--secondary-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(236, 72, 153, 0.3);
+  background: linear-gradient(135deg, var(--secondary-dark), var(--secondary));
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+  transform: translateY(-3px);
 }
 
+.btn-secondary:active {
+  box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3);
+}
+
+/* Outline Button */
 .btn-outline {
   background: transparent;
   color: var(--primary);
   border: 2px solid var(--primary);
+  box-shadow: 0 0 0 rgba(16, 185, 129, 0);
 }
 
 .btn-outline:hover {
   background: var(--primary);
   color: white;
+  border-color: var(--primary-dark);
+  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+  transform: translateY(-3px);
 }
 
+.btn-outline:active {
+  box-shadow: 0 2px 10px rgba(16, 185, 129, 0.2);
+}
+
+/* 响应式按钮大小 */
+@media (min-width: 1024px) {
+  .btn {
+    padding: 0.75rem 1.75rem; /* 上下16px 左右40px - 更宽松的内边距 */
+    font-size: 1.125rem; /* 18px */
+  }
+}
+
+/* Card 基础样式 - 不含 padding，由 TSX 控制 */
 .card {
   background: white;
   border-radius: var(--card-border-radius);
-  padding: 2rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   transition: all var(--transition-base) var(--ease-smooth);
+  /* padding, margin 由 Tailwind 在 TSX 中控制 */
 }
 
 .card:hover {
