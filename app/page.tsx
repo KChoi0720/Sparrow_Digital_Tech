@@ -1,10 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null);
+  const [activeCard, setActiveCard] = useState<number | null>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -24,6 +26,21 @@ export default function Home() {
 
     return () => observer.disconnect();
   }, []);
+
+  const handleCardClick = (index: number) => {
+    if (activeCard === index) {
+      setActiveCard(null);
+    } else {
+      setActiveCard(index);
+    }
+  };
+
+  const handleScroll = () => {
+    // 滑动时关闭展开的卡片
+    if (activeCard !== null) {
+      setActiveCard(null);
+    }
+  };
 
   return (
     <div className="overflow-hidden">
@@ -222,8 +239,29 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8" style={{ marginBottom:'20px'}}>
-            {[
+          {/* 3D卡片轮播容器 */}
+          <div 
+            ref={scrollContainerRef}
+            onScroll={handleScroll}
+            className="overflow-x-auto overflow-y-visible pb-20 pt-10 flex justify-center"
+            style={{ 
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none'
+            }}
+          >
+            <style jsx>{`
+              div::-webkit-scrollbar {
+                display: none;
+              }
+            `}</style>
+            
+            <div 
+              className="flex gap-4 items-center px-4 md:px-10" 
+              style={{ 
+                perspective: '1000px'
+              }}
+            >
+              {[
               {
                 title: 'Web Development',
                 description: 'Custom websites and web applications built with modern technologies',
@@ -272,54 +310,190 @@ export default function Home() {
                 icon: '💼',
                 link: '/services#consulting'
               }
-            ].map((service, index) => (
-              <Link
-                key={index}
-                href={service.link}
-                className="group relative overflow-hidden rounded-3xl p-8 lg:p-10 bg-white shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 hover:scale-105"
-              >
-                {/* 背景渐变效果 */}
-                <div className={`absolute inset-0 bg-linear-to-br ${service.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}></div>
+            ].map((service, index) => {
+              const isActive = activeCard === index;
+              const totalCards = 6;
+              const middleIndex = Math.floor(totalCards / 2);
+              const distanceFromCenter = index - middleIndex;
+              const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+              
+              // 计算宽度：距离中心越远，宽度越宽（仅桌面端）
+              const getWidth = () => {
+                if (isActive) return isMobile ? '320px' : '400px';
+                if (isMobile) return '100px'; // 手机端所有卡片统一宽度，增加到100px更容易点击
                 
-                {/* 左上角装饰 */}
-                <div className={`absolute -top-10 -right-10 w-32 h-32 rounded-full bg-linear-to-br ${service.gradient} opacity-10 blur-2xl group-hover:opacity-20 transition-opacity duration-500`}></div>
+                const absDistance = Math.abs(distanceFromCenter);
+                // 桌面端：中间: 60px, 往外: 120px, 180px, 200px
+                if (absDistance === 0 || absDistance === 0.5) return '60px';
+                if (absDistance === 1 || absDistance === 1.5) return '120px';
+                if (absDistance === 2 || absDistance === 2.5) return '180px';
+                return '200px';
+              };
+              
+              // 计算3D变换和旋转角度
+              const getTransform = () => {
+                if (isActive) {
+                  return isMobile ? 'scale(1.05)' : 'rotateY(0deg) translateZ(50px) scale(1.1)';
+                }
                 
-                <div className="relative">
-                  {/* 图标 */}
-                  <div className={`inline-flex items-center justify-center w-16 h-16 lg:w-20 lg:h-20 mb-6 rounded-2xl bg-linear-to-br transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 ${
-                    service.bgColor === 'primary' ? 'from-primary/10 to-primary/5 group-hover:from-primary/20 group-hover:to-primary/10' :
-                    service.bgColor === 'secondary' ? 'from-secondary/10 to-secondary/5 group-hover:from-secondary/20 group-hover:to-secondary/10' :
-                    'from-accent/10 to-accent/5 group-hover:from-accent/20 group-hover:to-accent/10'
-                  }`}>
-                    <span className="text-3xl lg:text-4xl" >{service.icon}</span>
-                  </div>
-                  
-                  {/* 标题 */}
-                  <h3 className={`text-2xl lg:text-3xl font-bold mb-4 transition-colors duration-300 ${
-                    service.bgColor === 'primary' ? 'group-hover:text-primary' :
-                    service.bgColor === 'secondary' ? 'group-hover:text-secondary' :
-                    'group-hover:text-accent'
-                  }`} style={{ margin:'20px'}}>
-                    {service.title}
-                  </h3>
-                  
-                  {/* 描述 */}
-                  <p className="text-gray-600 mb-6 leading-relaxed" style={{ margin:'20px'}}>
-                    {service.description}
-                  </p>
-                  
-                  {/* Learn More 按钮 */}
-                  <div className={`inline-flex items-center gap-2 font-semibold transition-all duration-300 ${
-                    service.bgColor === 'primary' ? 'text-primary' :
-                    service.bgColor === 'secondary' ? 'text-secondary' :
-                    'text-accent'
-                  }`} style={{ margin:'20px'}}>
-                    <span>Learn More</span>
-                    <span className="transform group-hover:translate-x-2 transition-transform duration-300">→</span>
+                // 手机端：所有卡片都竖直显示（无3D效果）
+                if (isMobile) {
+                  return 'rotateY(90deg) scale(0.95)';
+                }
+                
+                // 桌面端：3D书架效果
+                const absDistance = Math.abs(distanceFromCenter);
+                
+                // 中间的卡片 - 90度显示书脊
+                if (absDistance === 0 || absDistance === 0.5) {
+                  return 'rotateY(90deg) translateZ(0px) scale(0.95)';
+                }
+                
+                // 左边的卡片 - 角度逐渐减小
+                if (distanceFromCenter < 0) {
+                  const rotation = 75 - absDistance * 10; // 75, 65, 55...
+                  return `rotateY(${rotation}deg) translateZ(-20px) scale(0.95)`;
+                }
+                
+                // 右边的卡片 - 角度逐渐减小
+                const rotation = -75 + absDistance * 10; // -75, -65, -55...
+                return `rotateY(${rotation}deg) translateZ(-20px) scale(0.95)`;
+              };
+
+              return (
+                <div
+                  key={index}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleCardClick(index);
+                  }}
+                  className="relative cursor-pointer transition-all duration-700 ease-out"
+                  style={{
+                    width: getWidth(),
+                    height: isMobile ? '400px' : '500px',
+                    transformStyle: isMobile ? 'flat' : 'preserve-3d',
+                    transform: getTransform(),
+                    zIndex: isActive ? 50 : 10 - Math.abs(distanceFromCenter)
+                  }}
+                >
+                  {/* 卡片主体 */}
+                  <div 
+                    className={`absolute inset-0 rounded-2xl shadow-2xl bg-linear-to-br ${service.gradient} overflow-hidden transition-all duration-700`}
+                    style={{
+                      backfaceVisibility: 'hidden'
+                    }}
+                  >
+                    {/* 书脊/侧面视图 - 未展开时显示 */}
+                    {!isActive && (() => {
+                      const absDistance = Math.abs(distanceFromCenter);
+                      const cardWidth = getWidth();
+                      
+                      // 手机端 - 所有卡片都只显示书脊
+                      if (isMobile || cardWidth === '100px') {
+                        return (
+                          <div className="h-full flex items-center justify-center">
+                            <div className="transform -rotate-90 whitespace-nowrap">
+                              <h3 className="text-white font-bold text-base md:text-xl">{service.title}</h3>
+                            </div>
+                          </div>
+                        );
+                      }
+                      
+                      // 桌面端 - 中间的卡片只显示书脊
+                      if (absDistance === 0 || absDistance === 0.5) {
+                        return (
+                          <div className="h-full flex items-center justify-center">
+                            <div className="transform -rotate-90 whitespace-nowrap">
+                              <h3 className="text-white font-bold text-xl">{service.title}</h3>
+                            </div>
+                          </div>
+                        );
+                      }
+                      
+                      // 桌面端 - 侧面的卡片显示部分封面内容
+                      return (
+                        <div className="h-full p-4 flex flex-col justify-between text-white">
+                          <div>
+                            {/* 图标 */}
+                            <div className="inline-flex items-center justify-center w-12 h-12 mb-3 rounded-xl bg-white/20">
+                              <span className="text-2xl">{service.icon}</span>
+                            </div>
+                            
+                            {/* 标题 - 根据宽度调整字体大小 */}
+                            <h3 className={`font-bold mb-2 ${
+                              cardWidth === '120px' ? 'text-sm' : 
+                              cardWidth === '180px' ? 'text-base' : 
+                              'text-lg'
+                            }`}>
+                              {service.title}
+                            </h3>
+                            
+                            {/* 描述 - 只在较宽的卡片上显示 */}
+                            {(cardWidth === '180px' || cardWidth === '200px') && (
+                              <p className="text-xs opacity-80 line-clamp-3">
+                                {service.description}
+                              </p>
+                            )}
+                          </div>
+                          
+                          {/* 底部装饰 */}
+                          <div className="text-xs opacity-60">
+                            Click to expand
+                          </div>
+                        </div>
+                      );
+                    })()}
+
+                    {/* 完整内容视图 - 展开时显示 */}
+                    {isActive && (
+                      <div className="h-full p-8 flex flex-col justify-between text-white overflow-y-auto">
+                        <div>
+                          {/* 图标 */}
+                          <div className="inline-flex items-center justify-center w-20 h-20 mb-6 rounded-2xl bg-white/20">
+                            <span className="text-5xl">{service.icon}</span>
+                          </div>
+                          
+                          {/* 标题 */}
+                          <h3 className="text-3xl font-bold mb-4">
+                            {service.title}
+                          </h3>
+                          
+                          {/* 描述 */}
+                          <p className="text-lg opacity-90 leading-relaxed mb-6">
+                            {service.description}
+                          </p>
+
+                          {/* 特性列表 */}
+                          <div className="space-y-3 mb-6">
+                            <div className="flex items-center gap-2">
+                              <span className="text-xl">✓</span>
+                              <span className="opacity-90">Modern Technology Stack</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-xl">✓</span>
+                              <span className="opacity-90">Expert Team</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-xl">✓</span>
+                              <span className="opacity-90">24/7 Support</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* 底部按钮 */}
+                        <Link
+                          href={service.link}
+                          className="block w-full text-center bg-white/20 hover:bg-white/30 rounded-xl py-3 font-semibold transition-colors"
+                        >
+                          Learn More →
+                        </Link>
+                      </div>
+                    )}
                   </div>
                 </div>
-              </Link>
-            ))}
+              );
+            })}
+            </div>
           </div>
 
           <div className="text-center mt-16">
