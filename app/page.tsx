@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
 export default function Home() {
@@ -269,7 +270,8 @@ export default function Home() {
                 gradient: 'from-primary to-primary-dark',
                 bgColor: 'primary',
                 icon: '🌐',
-                link: '/services#web'
+                link: '/services#web',
+                coverImage: '/images/art-1.png'
               },
               {
                 title: 'Mobile Apps',
@@ -277,7 +279,8 @@ export default function Home() {
                 gradient: 'from-secondary to-secondary-dark',
                 bgColor: 'secondary',
                 icon: '📱',
-                link: '/services#mobile'
+                link: '/services#mobile',
+                coverImage: '/images/art-2.png'
               },
               {
                 title: 'UI/UX Design',
@@ -285,7 +288,8 @@ export default function Home() {
                 gradient: 'from-accent to-accent-dark',
                 bgColor: 'accent',
                 icon: '🎨',
-                link: '/services#design'
+                link: '/services#design',
+                coverImage: '/images/art-3.png'
               },
               {
                 title: 'Digital Marketing',
@@ -293,7 +297,8 @@ export default function Home() {
                 gradient: 'from-primary to-secondary',
                 bgColor: 'primary',
                 icon: '📈',
-                link: '/services#marketing'
+                link: '/services#marketing',
+                coverImage: '/images/art-4.png'
               },
               {
                 title: 'Cloud Solutions',
@@ -301,7 +306,8 @@ export default function Home() {
                 gradient: 'from-secondary to-accent',
                 bgColor: 'secondary',
                 icon: '☁️',
-                link: '/services#cloud'
+                link: '/services#cloud',
+                coverImage: '/images/art-5.png'
               },
               {
                 title: 'Consulting',
@@ -411,35 +417,32 @@ export default function Home() {
                         );
                       }
                       
-                      // 桌面端 - 侧面的卡片显示部分封面内容
+                      // 桌面端 - 侧面的卡片显示封面图片
                       return (
-                        <div className="h-full p-4 flex flex-col justify-between text-white">
-                          <div>
-                            {/* 图标 */}
-                            <div className="inline-flex items-center justify-center w-12 h-12 mb-3 rounded-xl bg-white/20">
-                              <span className="text-2xl">{service.icon}</span>
-                            </div>
-                            
-                            {/* 标题 - 根据宽度调整字体大小 */}
-                            <h3 className={`font-bold mb-2 ${
-                              cardWidth === '120px' ? 'text-sm' : 
-                              cardWidth === '180px' ? 'text-base' : 
-                              'text-lg'
+                        <div className="h-full relative overflow-hidden">
+                          {/* 封面图片 */}
+                          {service.coverImage && (
+                            <Image
+                              src={service.coverImage}
+                              alt={service.title}
+                              fill
+                              className="object-cover"
+                              sizes={cardWidth}
+                            />
+                          )}
+                          
+                          {/* 渐变遮罩层 - 让标题更清晰可见 */}
+                          <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/30 to-transparent"></div>
+                          
+                          {/* 标题覆盖层 */}
+                          <div className="absolute bottom-0 left-0 right-0 p-3 text-white">
+                            <h3 className={`font-bold text-center ${
+                              cardWidth === '120px' ? 'text-xs' : 
+                              cardWidth === '180px' ? 'text-sm' : 
+                              'text-base'
                             }`}>
                               {service.title}
                             </h3>
-                            
-                            {/* 描述 - 只在较宽的卡片上显示 */}
-                            {(cardWidth === '180px' || cardWidth === '200px') && (
-                              <p className="text-xs opacity-80 line-clamp-3">
-                                {service.description}
-                              </p>
-                            )}
-                          </div>
-                          
-                          {/* 底部装饰 */}
-                          <div className="text-xs opacity-60">
-                            Click to expand
                           </div>
                         </div>
                       );
