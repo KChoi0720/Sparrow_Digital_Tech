@@ -43,6 +43,21 @@ export default function Home() {
     }
   };
 
+  // 手机端初始化时滚动到中间位置
+  useEffect(() => {
+    if (scrollContainerRef.current && typeof window !== 'undefined' && window.innerWidth < 768) {
+      const container = scrollContainerRef.current;
+      const scrollWidth = container.scrollWidth;
+      const clientWidth = container.clientWidth;
+      const scrollLeft = (scrollWidth - clientWidth) / 2;
+      
+      // 延迟一点时间确保DOM完全渲染
+      setTimeout(() => {
+        container.scrollLeft = scrollLeft;
+      }, 100);
+    }
+  }, []);
+
   return (
     <div className="overflow-hidden">
       {/* Hero Section */}
@@ -245,10 +260,12 @@ export default function Home() {
           <div 
             ref={scrollContainerRef}
             onScroll={handleScroll}
-            className="overflow-x-auto overflow-y-visible pb-20 pt-10 flex justify-center"
+            className="overflow-x-auto overflow-y-visible pb-20 pt-10"
             style={{ 
               scrollbarWidth: 'none',
-              msOverflowStyle: 'none'
+              msOverflowStyle: 'none',
+              scrollSnapType: 'x mandatory',
+              WebkitOverflowScrolling: 'touch'
             }}
           >
             <style jsx>{`
@@ -261,7 +278,7 @@ export default function Home() {
               className="flex items-center px-4 md:px-10" 
               style={{ 
                 perspective: '1000px',
-                gap: '1.5rem'
+                gap: typeof window !== 'undefined' && window.innerWidth < 768 ? '0.5rem' : '1.5rem'
               }}
             >
               {[
@@ -320,44 +337,47 @@ export default function Home() {
               const distanceFromCenter = index - middleIndex;
               const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
               
-              // 计算宽度：距离中心越远，宽度越宽（仅桌面端）
+              // 计算宽度：距离中心越远，宽度越宽
               const getWidth = () => {
-                if (isActive) return isMobile ? '320px' : '400px';
-                if (isMobile) return '100px'; // 手机端所有卡片统一宽度，增加到100px更容易点击
+                if (isActive) return isMobile ? '280px' : '400px';
                 
                 const absDistance = Math.abs(distanceFromCenter);
-                // 桌面端：最接近中心(0.5): 120px, 1.5: 180px, 2.5: 200px
-                if (absDistance === 0.5) return '120px';
-                if (absDistance === 1.5) return '180px';
-                if (absDistance === 2.5) return '200px';
-                return '200px';
+                // 手机端和桌面端统一逻辑
+                if (isMobile) {
+                  if (absDistance === 0.5) return '90px';
+                  if (absDistance === 1.5) return '130px';
+                  if (absDistance === 2.5) return '150px';
+                  return '150px';
+                } else {
+                  if (absDistance === 0.5) return '120px';
+                  if (absDistance === 1.5) return '180px';
+                  if (absDistance === 2.5) return '200px';
+                  return '200px';
+                }
               };
               
               // 计算3D变换和旋转角度
               const getTransform = () => {
                 if (isActive) {
-                  return isMobile ? 'scale(1.05)' : 'rotateY(0deg) translateZ(50px) scale(1.1)';
+                  return 'rotateY(0deg) translateZ(50px) scale(1.1)';
                 }
                 
-                // 手机端：所有卡片都竖直显示（无3D效果）
-                if (isMobile) {
-                  return 'rotateY(90deg) scale(0.95)';
-                }
-                
-                // 桌面端：3D书架效果
+                // 手机端和桌面端：统一的3D书架效果
                 const absDistance = Math.abs(distanceFromCenter);
                 
-                // 左边的卡片 - 角度逐渐减小
+                // 左边的卡片 - 书脊朝左（正角度）
                 if (distanceFromCenter < 0) {
                   // 0.5: 75deg, 1.5: 65deg, 2.5: 55deg
                   const rotation = 75 - (absDistance - 0.5) * 10;
-                  return `rotateY(${rotation}deg) translateZ(-20px) scale(0.95)`;
+                  const translateZ = isMobile ? -10 : -20;
+                  return `rotateY(${rotation}deg) translateZ(${translateZ}px) scale(0.95)`;
                 }
                 
-                // 右边的卡片 - 角度逐渐减小
+                // 右边的卡片 - 书脊朝右（负角度）
                 // 0.5: -75deg, 1.5: -65deg, 2.5: -55deg
                 const rotation = -75 + (absDistance - 0.5) * 10;
-                return `rotateY(${rotation}deg) translateZ(-20px) scale(0.95)`;
+                const translateZ = isMobile ? -10 : -20;
+                return `rotateY(${rotation}deg) translateZ(${translateZ}px) scale(0.95)`;
               };
 
               return (
@@ -370,8 +390,8 @@ export default function Home() {
                   className="relative cursor-pointer transition-all duration-700 ease-out"
                   style={{
                     width: getWidth(),
-                    height: isMobile ? '300px' : '380px',
-                    transformStyle: isMobile ? 'flat' : 'preserve-3d',
+                    height: isMobile ? '260px' : '380px',
+                    transformStyle: 'preserve-3d',
                     transform: getTransform(),
                     zIndex: isActive ? 50 : 10 - Math.abs(distanceFromCenter),
                     marginTop:'40px',
@@ -430,18 +450,7 @@ export default function Home() {
                     {!isActive && (() => {
                       const cardWidth = getWidth();
                       
-                      // 手机端 - 所有卡片都只显示书脊
-                      if (isMobile || cardWidth === '100px') {
-                        return (
-                          <div className="h-full flex items-center justify-center">
-                            <div className="transform -rotate-90 whitespace-nowrap">
-                              <h3 className="text-white font-bold text-base md:text-xl">{service.title}</h3>
-                            </div>
-                          </div>
-                        );
-                      }
-                      
-                      // 桌面端 - 所有卡片都显示封面图片（不再有纯书脊模式）
+                      // 手机端和桌面端统一 - 所有卡片都显示封面图片
                       return (
                         <div className="h-full relative overflow-hidden">
                           {/* 封面图片 */}
@@ -459,8 +468,9 @@ export default function Home() {
                           <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/30 to-transparent"></div>
                           
                           {/* 标题覆盖层 */}
-                          <div className="absolute bottom-0 left-0 right-0 p-3 text-white">
+                          <div className="absolute bottom-0 left-0 right-0 p-2 text-white">
                             <h3 className={`font-bold text-center ${
+                              isMobile ? 'text-xs' :
                               cardWidth === '120px' ? 'text-xs' : 
                               cardWidth === '180px' ? 'text-sm' : 
                               'text-base'
